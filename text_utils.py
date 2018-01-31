@@ -128,6 +128,75 @@ def nltk_noun_parser(corpus_name):
 ##############################
 # Word freq df utils
 ##############################
+class word_features_sim(object):
+        """
+            ----------------------------------------
+            WORD FEATURE & SIMILARITY GENERATION
+            ----------------------------------------
+            Features are created on eitehr TFIDF or FREQ levels
+            Outputs are dataframe formatted for visualisation & Dictionary form for processing
+
+            Parameters:
+    		-----------
+    		input_text     :  np.array. text (Documents)
+            vec_type       : 'tfidf' or 'freq'
+
+    		Returns:
+    		-----------
+    		self: update of the class attributes
+            self.word_features (tfidf matrix)
+            self.feature_names
+            self.top_words_per_doc
+            self.top_similar_docs
+
+        """
+
+        def __init__(self
+                    ,input_text
+                    ,vec_type='tfidf'
+                    ,n_top_words=20
+                    ,n_similar_docs=20
+                    ,sublinear_tf=False
+                    ,ngram_range=(1,1)
+                    ,norm=None
+                    ,max_features=None):
+
+            if vec_type=='tfidf':
+                from sklearn.feature_extraction.text import TfidfVectorizer
+                vectorizer = TfidfVectorizer(analyzer='word',stop_words='english',ngram_range=ngram_range,max_features=max_features) #sublinear_tf=True,
+
+            if vec_type=='freq':
+                from sklearn.feature_extraction.text import CountVectorizer
+                vectorizer = CountVectorizer(analyzer='word',stop_words='english',ngram_range=ngram_range,max_features=max_features) #sublinear_tf=True,
+
+            self.word_features = vectorizer.fit_transform(input_text)
+            self.feature_names = vectorizer.get_feature_names()
+            print('-----------------------------------------')
+            print('COMPLETE: '+vec_type+' Word Features Generated')
+
+            # Store all word that appear in each doc and TFIDF score
+            _df = pd.DataFrame({'doc_index':self.word_features.nonzero()[0], 'doc_matrix_indices':self.word_features.nonzero()[1], vec_type:self.word_features.data})
+            _df['phrase']=[self.feature_names[x] for x in _df.doc_matrix_indices]
+            _df = _df.sort_values(['doc_index',vec_type],ascending=[1,0])
+            _df['rank']=_df.groupby('doc_index')[vec_type].rank(ascending=False)
+
+
+            # Store top words
+            self.top_words_per_doc = _df[_df['rank']<=n_top_words]
+            self.top_words_per_doc = self.top_words_per_doc.groupby('doc_index').agg({'phrase':lambda x:', '.join(x)}).reset_index()
+            print('COMPLETE: Top words generated')
+
+            # Top similar between each doc
+            cosine_df = pd.DataFrame((self.word_features * self.word_features.T).A)
+            cs_df_reshaped = pd.DataFrame(cosine_df.stack()).reset_index()
+            cs_df_reshaped.columns=[['doc_index','compared_doc_index','cosine_similarity']]
+            cs_df_reshaped['rank']=cs_df_reshaped.groupby('doc_index')['cosine_similarity'].rank(ascending=False)
+            self.top_similar_docs = cs_df_reshaped[cs_df_reshaped['rank']<=n_similar_docs].sort_values(['doc_index','rank'],ascending=[1,1])
+            print('COMPLETE: Similarity computed')
+            print('-----------------------------------------')
+
+
+
 
 # reomove low freq words
 def word_freq_per_doc(input_text): #, threshold=10):
