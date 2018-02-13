@@ -9,7 +9,8 @@
 ############################
 import numpy as np
 from __future__ import division
-
+import collections
+from collections import defaultdict
 
 
 def join_two_dicts(a,
@@ -38,9 +39,15 @@ def join_two_dicts(a,
         return dd
 
 
+############################
+# reload in Python3
+############################
+import importlib
+importlib.reload(module)
+
 
 ############################
-# numpy notes
+# arrays
 ############################
 
 #reshape to give 1 column
@@ -66,6 +73,9 @@ np.setdiff1d(a, b)
 # count non zero
 tess_nums = [0,0,0,1]
 np.count_nonzero(tess_nums)
+
+np.where(tX != 0)[0]
+
 
 
 
