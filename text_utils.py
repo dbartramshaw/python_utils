@@ -128,6 +128,16 @@ def nltk_noun_parser(corpus_name):
 ##############################
 # Word freq df utils
 ##############################
+
+def cosine_similairy_df(matrixA,matrixB):
+    import scipy.spatial as sp
+    cosine_df = pd.DataFrame(1 - sp.distance.cdist(matrixA, matrixB, 'cosine'))
+    cs_df_reshaped = pd.DataFrame(cosine_df.stack()).reset_index()
+    cs_df_reshaped.columns=[['doc_index','compared_doc_index','cosine_similarity']]
+    cs_df_reshaped['rank']=cs_df_reshaped.groupby('doc_index')['cosine_similarity'].rank(ascending=False)
+    return cs_df_reshaped
+
+
 class word_features_sim(object):
         """
             ----------------------------------------
@@ -144,6 +154,7 @@ class word_features_sim(object):
     		Returns:
     		-----------
     		self: update of the class attributes
+
             self.word_features (tfidf matrix)
             self.feature_names
             self.top_words_per_doc
@@ -154,24 +165,27 @@ class word_features_sim(object):
         def __init__(self
                     ,input_text
                     ,vec_type='tfidf'
-                    ,n_top_words=20
-                    ,n_similar_docs=20
-                    ,sublinear_tf=False
-                    ,ngram_range=(1,1)
-                    ,norm=None
-                    ,max_features=None):
+                    ,_sublinear_tf=False
+                    ,_ngram_range=(1,2)
+                    ,_norm=None
+                    ,_max_features=10000
+                    ,_vocabulary=None
+                    ,_stopwords='English'
+                    ,_min_df=1
+                    ,_max_df=1000
+                    ):
 
             if vec_type=='tfidf':
                 from sklearn.feature_extraction.text import TfidfVectorizer
-                vectorizer = TfidfVectorizer(analyzer='word',stop_words='english',ngram_range=ngram_range,max_features=max_features) #sublinear_tf=True,
+                vectorizer = TfidfVectorizer(analyzer='word',stop_words='english',ngram_range=_ngram_range,max_features=_max_features,vocabulary=_vocabulary,min_df=_min_df,max_df=_max_df,sublinear_tf=_sublinear_tf,norm=_norm)
 
             if vec_type=='freq':
                 from sklearn.feature_extraction.text import CountVectorizer
-                vectorizer = CountVectorizer(analyzer='word',stop_words='english',ngram_range=ngram_range,max_features=max_features) #sublinear_tf=True,
+                vectorizer = CountVectorizer(analyzer='word',stop_words='english',ngram_range=_ngram_range,max_features=_max_features,vocabulary=_vocabulary,min_df=_min_df,max_df=_max_df)
 
             self.word_features = vectorizer.fit_transform(input_text)
             self.feature_names = vectorizer.get_feature_names()
-            print('-----------------------------------------')
+            #print('-----------------------------------------')
             print('COMPLETE: '+vec_type+' Word Features Generated')
 
             # Store all word that appear in each doc and TFIDF score
@@ -179,22 +193,130 @@ class word_features_sim(object):
             _df['phrase']=[self.feature_names[x] for x in _df.doc_matrix_indices]
             _df = _df.sort_values(['doc_index',vec_type],ascending=[1,0])
             _df['rank']=_df.groupby('doc_index')[vec_type].rank(ascending=False)
+            self._df = _df
 
-
+        def top_words(self,n_top_words=20):
             # Store top words
-            self.top_words_per_doc = _df[_df['rank']<=n_top_words]
+            self.top_words_per_doc = self._df[self._df['rank']<=n_top_words]
             self.top_words_per_doc = self.top_words_per_doc.groupby('doc_index').agg({'phrase':lambda x:', '.join(x)}).reset_index()
             print('COMPLETE: Top words generated')
 
+        def doc_similarity(self
+                          ,labels=[]
+                          ,n_similar_docs=20
+                          ):
+            """
+                -----------
+                Parameters:
+        		-----------
+                labels: list of labels that correspond to input_text_index
+            """
             # Top similar between each doc
-            cosine_df = pd.DataFrame((self.word_features * self.word_features.T).A)
-            cs_df_reshaped = pd.DataFrame(cosine_df.stack()).reset_index()
-            cs_df_reshaped.columns=[['doc_index','compared_doc_index','cosine_similarity']]
-            cs_df_reshaped['rank']=cs_df_reshaped.groupby('doc_index')['cosine_similarity'].rank(ascending=False)
+            cs_df_reshaped = cosine_similairy_df(self.word_features.todense() , self.word_features.todense())
             self.top_similar_docs = cs_df_reshaped[cs_df_reshaped['rank']<=n_similar_docs].sort_values(['doc_index','rank'],ascending=[1,1])
+            if labels!=[]:
+                self.top_similar_docs['label']         = [labels[x] for x in self.top_similar_docs.doc_index]
+                self.top_similar_docs['compare_label'] = [labels[x] for x in self.top_similar_docs.compared_doc_index]
+
             print('COMPLETE: Similarity computed')
+            #print('-----------------------------------------')
+
+
+###############################################################
+# COMPUTE SIMILARITY WITH DOCS
+###############################################################
+class industry_doc_similarity(object):
+        """
+            Inputs:
+            -----------
+            gold_labels_df: The ground truth labels from sitemap
+
+
+            Returns:
+            -----------
+            cs_df: similarity of all urls to each indutry
+            cs_max_similarity: max_similarity indutry only
+        """
+
+        def __init__(self
+                    ,url_text=None
+                    ,url_lables=None
+                    ,industry_text=None
+                    ,industry_labels=None
+                    ,exclude_none_class = True
+                    ,gold_labels_df = None
+                    ,test_col = 'industry_predicted'
+                    ,gold_col = 'industries_name'
+                    ):
+            #global url_tf,industry_tf,cs_df,cs_max_similarity,cs_df_check,url_tf_df,industry_tf_df
+
+            #gold_labels_df = None
+            print('----- URL LEVEL -----')
+            self.url_tf = word_features_sim(url_text,vec_type='tfidf',_min_df=2,_max_df=500,_norm='l2')
+            self.url_tf.top_words(n_top_words=20)
+            self.url_tf.doc_similarity(labels=url_lables,n_similar_docs=len(url_text))
+            self.url_tf_df = pd.DataFrame(self.url_tf.word_features.todense(),index=url_lables,columns=self.url_tf.feature_names)
+
+            print('----- INDUSTRY LEVEL -----')
+            # Ensure the same vocab is used from root: _vocabulary=url_tf.feature_names
+            self.industry_tf = word_features_sim(industry_text,vec_type='tfidf',_vocabulary=self.url_tf.feature_names,_min_df=2,_max_df=6,_norm='l2')
+            self.industry_tf.top_words(n_top_words=20)
+            self.industry_tf.doc_similarity(labels=industry_labels,n_similar_docs=len(industry_text))
+            self.industry_tf_df = pd.DataFrame(self.industry_tf.word_features.todense(),index=industry_labels,columns=self.industry_tf.feature_names)
+
+
+            print('----- SIMILARITY CALC -----')
+            self.cs_df = cosine_similairy_df(self.url_tf.word_features.todense(),self.industry_tf.word_features.todense())
+            self.cs_df.columns = ['page_index','industry_index','cosine_similarity','rank']
+            self.cs_df['url']=[url_lables[x] for x in self.cs_df.page_index]
+            self.cs_df[test_col]=[industry_labels[x] for x in self.cs_df.industry_index]
+
+            self.cs_df['top_quintile']= (self.cs_df['cosine_similarity']>=self.cs_df.cosine_similarity.quantile(0.9)).astype(int)
+            self.cs_df['top2_quintile']= (self.cs_df['cosine_similarity']>=self.cs_df.cosine_similarity.quantile(0.8)).astype(int)
+            self.cs_df = self.cs_df.sort_values(['page_index','rank'],ascending=[1,1])
+            print('COMPLETE: Similarity Calculation')
+
+            if exclude_none_class == True:
+                self.cs_df_no_other=self.cs_df[self.cs_df[test_col]!='None'].reset_index()
+                self.cs_max_similarity = self.cs_df_no_other.loc[self.cs_df_no_other.groupby(['page_index'])['rank'].idxmin()]
+                print('COMPLETE: Classification - "None" category removed')
+                #print(len(self.cs_df_no_other))
+            else:
+                self.cs_max_similarity = self.cs_df.loc[self.cs_df.groupby(['page_index'])['rank'].idxmin()]
+                print('COMPLETE: Classification - No removal')
+                #print(len(self.cs_df))
+
+
+            if gold_labels_df is not None:
+                top_similarity_class = pd.merge(self.cs_max_similarity,gold_labels_df, on='url', how='left')
+
+                # Only measure for those with an industry tag
+                top_similarity_class=top_similarity_class[top_similarity_class['industries_tag_yn']==True]
+                top_similarity_class['correct_yn']= top_similarity_class[test_col]==top_similarity_class[gold_col]
+                tested_items = top_similarity_class
+
+                #Test where industry_tag=True
+                total_urls = len(top_similarity_class.url.unique())
+                total_correct=len(top_similarity_class[(top_similarity_class.correct_yn==True)].url.unique())
+
+                print('Accuracy: '+str(total_correct/total_urls))
+                print('Correct: '+str(total_correct)+'/'+str(total_urls))
+
             print('-----------------------------------------')
 
+
+
+# # RUN IT
+# root_ =industry_doc_similarity2(url_text=clean_text_dict.values()
+#                                ,url_lables=clean_text_dict.keys()
+#                                ,industry_text=tag_corpus['text'].values
+#                                ,industry_labels=tag_corpus['industry'].values
+#                                ,exclude_none_class = True
+#                                ,gold_labels_df = industry_feature.sitemap_df[['url','industries_tag_yn','industries_name']]
+#                                ,test_col = 'industry_predicted'
+#                                ,gold_col = 'industries_name'
+#                                 )
+# root_.__dict__.keys()
 
 
 

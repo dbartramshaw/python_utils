@@ -46,6 +46,7 @@ import importlib
 importlib.reload(module)
 
 
+
 ############################
 # arrays
 ############################
@@ -100,3 +101,15 @@ full_sparse.shape
 [a if a else 2 for a in [0,1,0,3]]
 
 flat_list = [item for sublist in l for item in sublist]
+
+
+
+
+
+############################
+# Classes
+############################
+
+tf = class_name()
+# shows all attributes creates in .self
+tf.__dict__.keys()
