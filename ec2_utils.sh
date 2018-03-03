@@ -146,6 +146,12 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 # UBUNTU - Working
 #####################
 # https://www.learnopencv.com/install-opencv3-on-ubuntu/
+
+'''Step 1: Update packages '''
+sudo apt-get update
+sudo apt-get upgrade
+
+''' Step 2: Install OS libraries '''
 sudo apt-get remove x264 libx264-dev #remove old versions
 sudo apt-get install build-essential checkinstall cmake pkg-config yasm
 sudo apt-get install git gfortran
@@ -168,11 +174,14 @@ sudo apt-get install x264 v4l-utils
 sudo apt-get install libprotobuf-dev protobuf-compiler
 sudo apt-get install libgoogle-glog-dev libgflags-dev
 sudo apt-get install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
+
+'''Step 3: Install Python libraries '''
 sudo apt-get install python-dev python-pip python3-dev python3-pip
 sudo -H pip2 install -U pip numpy
 sudo -H pip3 install -U pip numpy
 pip install numpy scipy matplotlib scikit-image scikit-learn ipython
 
+'''Step 4: Download OpenCV and OpenCV_contrib'''
 git clone https://github.com/opencv/opencv.git
 cd opencv 
 git checkout 3.3.1 
@@ -182,6 +191,7 @@ cd opencv_contrib
 git checkout 3.3.1
 cd ..
 
+''' Step 5: Compile and install OpenCV with contrib modules '''
 cd opencv 
 mkdir build
 cd build
@@ -319,6 +329,7 @@ lsblk
 
 # Now update root
 sudo growpart /dev/xvda 1
+sudo resize2fs /dev/xvda1
 
 
 
