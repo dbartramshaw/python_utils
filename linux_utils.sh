@@ -20,6 +20,10 @@ ls -l
 #open current location in finder
 open . 
 
+# count files in folder
+# ls:list , -1: only one entry per line , |: pipe output onto... , wc:"wordcount"   , -l: count lines.
+ls -1 | wc -l
+
 # run jupyter on certain port
 jupyter notebook --port=8889
 jupyter notebook list
@@ -142,6 +146,6 @@ rm -rf .git
 python2 -m pip install ipykernel
 python2 -m ipykernel install --user
 
-python3 -m pip install ipykernel
-python3 -m ipykernel install --user
+sudo python3 -m pip install ipykernel
+sudo python3 -m ipykernel install --user
 

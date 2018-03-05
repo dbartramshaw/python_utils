@@ -81,6 +81,85 @@ dot -V
 sudo apt install graphviz
 
 
+######################
+# python setup 2&3
+######################
+# Fixes the multiple running of pythons
+python2 -m pip install ipykernel
+python2 -m ipykernel install --user
+
+sudo python3 -m pip install ipykernel
+sudo python3 -m ipykernel install --user
+
+
+
+###########################
+# jupyter Notebook setup
+###########################
+# run in ec2
+ipython
+from IPython.lib import passwd
+
+passwd() #password
+#Out[2]: 'sha1:cbd351b6ab01:e2a4bbf3aa2511ec6090e8ae1176f345793fd96d'
+exit()
+
+jupyter notebook --generate-config 
+y
+mkdir certs
+cd certs
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
+'''
+Generating a 1024 bit RSA private key
+..............................++++++
+............++++++
+writing new private key to 'mycert.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+'''
+
+cd ~/.jupyter/
+nano jupyter_notebook_config.py 
+
+#paste this in, [control+X] to exit
+'''
+c = get_config()
+c.IPKernelApp.pylab = 'inline' 
+c.NotebookApp.certfile = u'/home/ubuntu/certs/mycert.pem' 
+c.NotebookApp.ip = '*' 
+c.NotebookApp.open_browser = False 
+
+# Your password below will be whatever you copied earlier 
+c.NotebookApp.password = 'sha1:985a0a91503f:cb28d23954f4e27e9e161b38deea32882e0240a8'
+c.NotebookApp.port = 8889
+'''
+
+cd
+
+# Just accessable to a cerain part
+mkdir Notebook
+cd Notebook/
+
+#nohup means it doesnt close down when exit
+nohup jupyter notebook
+
+#https://193.109.116.16/32:8888/
+
+
+
 #####################
 # Install OPENCV 
 # UBUNTU 
@@ -132,13 +211,6 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.1.0/modules \
     -D BUILD_EXAMPLES=ON ..
 
-
-cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D INSTALL_PYTHON_EXAMPLES=ON \
-    -D INSTALL_C_EXAMPLES=OFF \
-    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
-    -D BUILD_EXAMPLES=ON ..
 
 
 #####################
@@ -208,10 +280,9 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D BUILD_EXAMPLES=ON ..
 
 
-
-
 ''' Step 5.3: Compile and Install '''
 # find out number of CPU cores in your machine
+
 nproc
 # substitute 4 by output of nproc
 make -j1
