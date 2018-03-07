@@ -215,6 +215,47 @@ X, Y = zip(*trainingData_test)
 
 
 
+
+############################
+# Itertools
+############################
+import itertools
+
+# ???
+# # Simple overlap of all tuples (From lastfm_distance_metrics)
+# list_of_sets = {'a': {0, 1, 2},'b':{0,4},'c':{2,3,4}}
+# intersection_df = pd.DataFrame(columns=['artist_1','artist_2','count_of_overlap'])
+# counter =0
+# for i in list_of_sets.keys():
+#     for j in list_of_sets.keys():
+#         intersec= overlap(list_of_sets[i],list_of_sets[j])
+#         empty_df = pd.DataFrame({'artist_1':i, 'artist_2':j, 'count_of_overlap':intersec}, index=[0])
+#         intersection_df=intersection_df.append(empty_df)
+#         counter+=1
+# intersection_df.reset_index()
+
+
+# Print all 4 number combinations
+from itertools import combinations, starmap
+number = [53, 64, 68, 71, 77, 82, 85]
+print list(combinations(number, 4))
+
+
+# Speed this up using combinations
+s = [set([1, 2]), set([1, 3]), set([1, 2, 3]), set([2, 4])]
+list(combinations(s,2))
+
+
+# Combinations of lists
+import itertools
+a = [[1,2,3],[4,5,6],[7,8,9,10]]
+list(itertools.product(*a))
+
+
+
+
+
+
 ############################
 # TIMES
 ############################
@@ -313,6 +354,8 @@ np.asarray(list_name)
 
 # Convert list of unicode to str
 clean_text = [x.encode('UTF8') for x in sentence.split()]
+
+
 
 
 ############################
