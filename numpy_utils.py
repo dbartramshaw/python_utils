@@ -154,8 +154,6 @@ pd.DataFrame.from_dict({(i,j): user_dict[i][j]
                        orient='index')
 
 
-
-
 def depth(d, level=1):
     """ # Find depth of dict """
     if not isinstance(d, dict) or not d:
@@ -205,6 +203,21 @@ depth(example_dict)
 
 
 ############################
+# DefaultDicts
+############################
+from collections import defaultdict
+
+#it means expect ints
+def_dict = defaultdict(int)
+your_list=['a','b','c']
+for i in your_list:
+    def_dict[i]=0
+
+
+
+
+
+############################
 # Zip
 ############################
 
@@ -245,8 +258,7 @@ print list(combinations(number, 4))
 s = [set([1, 2]), set([1, 3]), set([1, 2, 3]), set([2, 4])]
 list(combinations(s,2))
 
-
-# Combinations of lists
+# Combinations of two lists
 import itertools
 a = [[1,2,3],[4,5,6],[7,8,9,10]]
 list(itertools.product(*a))
@@ -254,10 +266,8 @@ list(itertools.product(*a))
 
 
 
-
-
 ############################
-# TIMES
+# Time
 ############################
 from time import gmtime, strftime
 print('Start: '+strftime("%Y-%m-%d %H:%M:%S", gmtime()))
@@ -357,13 +367,7 @@ clean_text = [x.encode('UTF8') for x in sentence.split()]
 
 
 
-
-############################
-# Text functions
-############################
 from nltk import ngrams
-
-
 def get_grams(sentence, n):
     """ # Get ngrams from sentance """
     ngrams_gen = ngrams(sentence.split(), n)
