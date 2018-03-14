@@ -345,9 +345,6 @@ def UNIX_to_str(UNIX_date):
 
 
 
-
-
-
 ############################
 # Text
 ############################
@@ -417,3 +414,31 @@ def store_occurrences_ngram(phrases,sentance):
 test_products = ['azure government trial','bing maps','surface','microsoft power bi','cortana intelligence suite']
 test_text = 'microsoft power bi manufacturers cash data microsoft enterprise enterprise microsoft dynamics crm microsoft power bi surface microsoft power bi'
 store_occurrences_ngram(test_products,test_text)
+
+
+
+##########################
+# Encoding
+##########################
+import binascii
+## Initial byte string
+s = b'hello'
+
+## Encode as hex
+import binascii
+h = binascii.b2a_hex(s)
+h
+# b'68656c6c6f'
+
+## Decode back to bytes
+binascii.a2b_hex(h)
+# b'hello'
+
+
+
+##########################
+# Dir paths
+##########################
+import os
+example_path = '/Users/bartramshawd/Documents/datasets/kaggle_dogbreed_data/test/000621fb3cbb32d8935728e48679680e.jpg'
+example_path.split(os.path.sep)
