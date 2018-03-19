@@ -84,6 +84,15 @@ np.count_nonzero(tess_nums)
 np.where(tX != 0)[0]
 
 
+# Lookup multiple values in list
+import random
+mylist = [random.choice(range(100)) for i in range(10)]
+# find the indexs
+find_idxs = [i for i,n in enumerate(mylist) if n > 33]
+# find values (Make sure Numpy!!)
+mylist=np.array(mylist)
+mylist[find_idxs]
+
 
 
 ############################
@@ -214,6 +223,13 @@ for i in your_list:
     def_dict[i]=0
 
 
+############################
+# Numbers
+############################
+
+
+# Leading 0's i.e 003
+str(3).zfill(3)
 
 
 
@@ -442,3 +458,12 @@ binascii.a2b_hex(h)
 import os
 example_path = '/Users/bartramshawd/Documents/datasets/kaggle_dogbreed_data/test/000621fb3cbb32d8935728e48679680e.jpg'
 example_path.split(os.path.sep)
+
+# walk()
+import os
+for root, dirs, files in os.walk(".", topdown=False):
+                        #os.walk("./HRI/Sessions/") ## get subdir
+   for name in files:
+      print(os.path.join(root, name))
+   for name in dirs:
+      print(os.path.join(root, name))
