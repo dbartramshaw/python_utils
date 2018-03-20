@@ -459,6 +459,7 @@ import os
 example_path = '/Users/bartramshawd/Documents/datasets/kaggle_dogbreed_data/test/000621fb3cbb32d8935728e48679680e.jpg'
 example_path.split(os.path.sep)
 
+
 # walk()
 import os
 for root, dirs, files in os.walk(".", topdown=False):
