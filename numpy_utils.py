@@ -378,6 +378,8 @@ np.asarray(list_name)
 # Convert list of unicode to str
 clean_text = [x.encode('UTF8') for x in sentence.split()]
 
+# right find
+'/fhg/hd'.rfind('/')
 
 
 from nltk import ngrams
