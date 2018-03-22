@@ -95,6 +95,18 @@ mylist[find_idxs]
 
 
 
+# Sampling on multiple datasets
+ns=np.array(range(164))
+size_train = int(round(164*0.66,0))
+train_indx = random.sample(range(164), size_train)
+test_index = ns[np.isin(ns,train_indx)==False]
+
+#check
+len(x_train[test_index])+len(x_train[train_indx])
+
+
+
+
 ############################
 # Matrices
 ############################
