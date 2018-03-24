@@ -133,7 +133,7 @@ def cosine_similairy_df(matrixA,matrixB):
     import scipy.spatial as sp
     cosine_df = pd.DataFrame(1 - sp.distance.cdist(matrixA, matrixB, 'cosine'))
     cs_df_reshaped = pd.DataFrame(cosine_df.stack()).reset_index()
-    cs_df_reshaped.columns=[['doc_index','compared_doc_index','cosine_similarity']]
+    cs_df_reshaped.columns=['doc_index','compared_doc_index','cosine_similarity']
     cs_df_reshaped['rank']=cs_df_reshaped.groupby('doc_index')['cosine_similarity'].rank(ascending=False)
     return cs_df_reshaped
 
