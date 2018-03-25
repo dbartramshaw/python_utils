@@ -105,6 +105,16 @@ test_index = ns[np.isin(ns,train_indx)==False]
 len(x_train[test_index])+len(x_train[train_indx])
 
 
+# Just select first N cols of numpy
+test_np = np.random.rand(10,7)
+test_np[:,0:2]
+
+# Delete the last item
+test_np = np.delete(test_np, -1)
+
+# array of a single value
+m = np.zeros((3,3))
+m += -1
 
 
 ############################
