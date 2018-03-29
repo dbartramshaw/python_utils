@@ -59,13 +59,16 @@ importlib.reload(module)
 #reshape to give 1 column
 vec.reshape(1,100).shape # = (1,100)
 
+
 # Reshape to
 feature.shape #(286,) #286 rows
 feature = feature.reshape(X.shape[0], 1)
 feature.shape #(286, 1)
 
+
 #append
 np.append(data,new_col)
+
 
 #argsort
 x = numpy.array([1.48,1.41,0.0,0.1])
@@ -76,9 +79,11 @@ print x[a] #, we will get array([ 0. , 0.1 , 1.41, 1.48]
 # setdiff - difference in two arrays
 np.setdiff1d(a, b)
 
+
 # count non zero
 tess_nums = [0,0,0,1]
 np.count_nonzero(tess_nums)
+
 
 # numpy where
 np.where(tX != 0)[0]
@@ -101,6 +106,7 @@ size_train = int(round(164*0.66,0))
 train_indx = random.sample(range(164), size_train)
 test_index = ns[np.isin(ns,train_indx)==False]
 
+
 #check
 len(x_train[test_index])+len(x_train[train_indx])
 
@@ -109,12 +115,26 @@ len(x_train[test_index])+len(x_train[train_indx])
 test_np = np.random.rand(10,7)
 test_np[:,0:2]
 
+
 # Delete the last item
 test_np = np.delete(test_np, -1)
+
 
 # array of a single value
 m = np.zeros((3,3))
 m += -1
+
+
+# Index steps
+import numpy as np
+# start:stop:step
+eg = np.array([1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4])
+eg[1::4]
+
+
+# Change format from mathematical to float
+"{:.2f}".format(float("8.99284722486562e-02"))
+
 
 
 ############################
@@ -411,9 +431,10 @@ def get_grams(sentence, n):
     return [' '.join(grams) for grams in ngrams_gen]
 
 # Run Example
-sentence = 'this is a foo bar sentences and i want to ngramize it'
+sentence = 'this is a foo bar sentences and i want to ngramize it foos'
 get_grams(sentence, 2)
 
+sentence.count('foo')
 
 
 def count_occurrences_ngram(phrase, sentence):
