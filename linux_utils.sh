@@ -27,9 +27,18 @@ ls -1 | wc -l
 # run jupyter on certain port
 jupyter notebook --port=8889
 jupyter notebook list
-jupyter notebook stop 8888
+jupyter notebook stop 8888Well
 
 
+# execute .sh
+# Give execute permission to your script:
+chmod +x /path/to/yourscript.sh
+
+# And to run your script:
+/path/to/yourscript.sh
+
+#Since . refers to the current directory: if yourscript.sh is in the current directory, you can simplify this to:
+./yourscript.sh
 
 
 ######################
@@ -149,3 +158,47 @@ python2 -m ipykernel install --user
 sudo python3 -m pip install ipykernel
 sudo python3 -m ipykernel install --user
 
+
+######################
+# # Fecked up pip
+######################
+# run the brew doctor - follow instructions
+
+# Will still run
+python3 -m pip install --upgrade pip 
+python -m pip install --upgrade pip 
+
+# wont run
+pip install numpy
+
+# Change of ownership -  dint work
+sudo chown -R bartramshawd pip
+
+#reset the PATH variable
+#Create a version of bash_profile (Save this as my_profile) 
+
+# #------------------------------------
+# export PATH=/usr/local/bin:$PATH
+
+# #--- Terminal en colores
+# export TERM=xterm-color
+# export CLICOLOR=1
+# export LSCOLORS=ExgxdxdxfxdxdxfxfxExEx
+
+# #—— Alias
+# alias rm='rm -i'
+# # (Adding this final Alias makes terminal check everytime you remove something)
+
+
+cp my_profile .bash_profile # Homebrew
+
+# copy this to a .bash_profile file
+cp my_profile .bash_profile
+
+# Make this the source
+source .bash_profile
+
+# run the brew doctor - follow instructions
+brew postinstall python
+brew postinstall python3
+sudo easy_install pip

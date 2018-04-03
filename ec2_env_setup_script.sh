@@ -68,8 +68,8 @@ sudo pip install jupyter
 sudo pip install Keras
 sudo pip install lightfm
 pip install git+https://github.com/coreylynch/pyFM
-sudo pip install pymc
 sudo pip install pymc3
+sudo pip install pymc
 sudo pip install requests
 sudo pip install sklearn-pandas
 sudo pip install theano
