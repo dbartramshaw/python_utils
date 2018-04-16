@@ -40,3 +40,36 @@ def get_sec(time_str):
     return int(h) * 3600 + int(m) * 60 + int(s)
 
 google_analytics['Avg. Time on Page'] = google_analytics['Avg. Time on Page'].apply(lambda x: get_sec(x)).astype(float)
+
+
+
+############################
+# dynamic filtering
+############################
+# Create a filter dynamically then filter a df
+df.query('Cat == 0')
+
+# better example using   widgets.SelectMultiple
+str_cond =[]
+for x in brand_.value:
+    str_cond.append('('+x+'>0)')
+brand_str_filter = ' & '.join(str_cond)
+brand_str_filter # = '(adventuros>0) or (beyond>0) or (veterinarydiets>0)'
+df.query(brand_str_filter)
+
+
+
+############################
+# dropping
+############################
+
+# drop multiple certain columns
+df.drop(['columnheading1', 'columnheading2'], axis=1, inplace=True)
+
+
+
+
+############################
+# renaming
+############################
+df.rename(columns={'words_new': 'words', 'unique_words_new': 'unique_words'}, inplace=True)
