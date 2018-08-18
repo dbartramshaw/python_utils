@@ -12,8 +12,9 @@ import pandas as pd
 # Pandas options
 pd.set_option('display.max_rows', 200)
 pd.set_option('display.max_colwidth', -1)
+pd.set_option('display.max_columns', -1)
 
-
+max_columns
 
 ############################
 # Column Formatting
@@ -41,6 +42,13 @@ def get_sec(time_str):
 
 google_analytics['Avg. Time on Page'] = google_analytics['Avg. Time on Page'].apply(lambda x: get_sec(x)).astype(float)
 
+
+
+# format % on column
+df['var3'].map(lambda n: '{:,.2%}'.format(n))
+
+# format % on series
+series_example.map(lambda n: '{:,.2%}'.format(n))
 
 
 ############################
@@ -73,3 +81,15 @@ df.drop(['columnheading1', 'columnheading2'], axis=1, inplace=True)
 # renaming
 ############################
 df.rename(columns={'words_new': 'words', 'unique_words_new': 'unique_words'}, inplace=True)
+
+
+
+############################
+# MultiIndex - drop
+############################
+df.columns = df.columns.droplevel()
+
+
+
+# Sort by index
+df.sort_index(inplace=True)

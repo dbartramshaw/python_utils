@@ -18,9 +18,13 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
+
 def _removeNonAscii(s):
     return "".join(i for i in s if ord(i)<128)
 
+def _removeNonAscii(s):
+    s = ' '.join(s.split())
+    return "".join(i for i in s if ord(i)<128)
 
 def clean(strg):
     import re

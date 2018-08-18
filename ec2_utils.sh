@@ -1,7 +1,7 @@
 
 """ -----------------------------------------------------------------------------------------------------------
 #
-# Ubuntu Machines 
+# Ubuntu Machines
 #
 #----------------------------------------------------------------------------------------------------------- """
 
@@ -72,7 +72,7 @@ nvidia-smi
 ######################
 # Package problems
 ######################
- 
+
 # Graphviz
 # Check if installed
 dot -V
@@ -104,7 +104,7 @@ passwd() #password
 #Out[2]: 'sha1:cbd351b6ab01:e2a4bbf3aa2511ec6090e8ae1176f345793fd96d'
 exit()
 
-jupyter notebook --generate-config 
+jupyter notebook --generate-config
 y
 mkdir certs
 cd certs
@@ -132,17 +132,17 @@ Email Address []:
 '''
 
 cd ~/.jupyter/
-nano jupyter_notebook_config.py 
+nano jupyter_notebook_config.py
 
 #paste this in, [control+X] to exit
 '''
 c = get_config()
-c.IPKernelApp.pylab = 'inline' 
-c.NotebookApp.certfile = u'/home/ubuntu/certs/mycert.pem' 
-c.NotebookApp.ip = '*' 
-c.NotebookApp.open_browser = False 
+c.IPKernelApp.pylab = 'inline'
+c.NotebookApp.certfile = u'/home/ubuntu/certs/mycert.pem'
+c.NotebookApp.ip = '*'
+c.NotebookApp.open_browser = False
 
-# Your password below will be whatever you copied earlier 
+# Your password below will be whatever you copied earlier
 c.NotebookApp.password = 'sha1:985a0a91503f:cb28d23954f4e27e9e161b38deea32882e0240a8'
 c.NotebookApp.port = 8889
 '''
@@ -161,8 +161,8 @@ nohup jupyter notebook
 
 
 #####################
-# Install OPENCV 
-# UBUNTU 
+# Install OPENCV
+# UBUNTU
 #####################
 # from the guru https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
 
@@ -191,7 +191,7 @@ wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.1.0.zip
 sudo apt install unzip
 unzip opencv.zip
 # we also need the opencv_contrib repository as well:
-# contains SIFT and SURF on OpenCV 3+ 
+# contains SIFT and SURF on OpenCV 3+
 wget -O opencv_contrib.zip https://github.com/Itseez/opencv_contrib/archive/3.1.0.zip
 unzip opencv_contrib.zip
 
@@ -214,7 +214,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 
 
 #####################
-# Install OPENCV 
+# Install OPENCV
 # UBUNTU - Working
 #####################
 # https://www.learnopencv.com/install-opencv3-on-ubuntu/
@@ -228,7 +228,7 @@ sudo apt-get remove x264 libx264-dev #remove old versions
 sudo apt-get install build-essential checkinstall cmake pkg-config yasm
 sudo apt-get install git gfortran
 sudo apt-get install libjpeg8-dev libjasper-dev libpng12-dev
- 
+
 # sudo apt-get install libtiff4-dev  # If you are using Ubuntu 14.04
 sudo apt-get install libtiff5-dev  # If you are using Ubuntu 16.04
 
@@ -241,22 +241,23 @@ sudo apt-get install libfaac-dev libmp3lame-dev libtheora-dev
 sudo apt-get install libvorbis-dev libxvidcore-dev
 sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
 sudo apt-get install x264 v4l-utils
- 
+
 # Optional dependencies
 sudo apt-get install libprotobuf-dev protobuf-compiler
 sudo apt-get install libgoogle-glog-dev libgflags-dev
 sudo apt-get install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
 
 '''Step 3: Install Python libraries '''
-sudo apt-get install python-dev python-pip python3-dev python3-pip
-sudo -H pip2 install -U pip numpy
-sudo -H pip3 install -U pip numpy
-pip install numpy scipy matplotlib scikit-image scikit-learn ipython
+# sudo apt-get install python-dev python-pip python3-dev python3-pip
+# sudo -H pip2 install -U pip numpy
+# sudo -H pip3 install -U pip numpy
+# pip install numpy scipy matplotlib scikit-image scikit-learn ipython
 
 '''Step 4: Download OpenCV and OpenCV_contrib'''
 git clone https://github.com/opencv/opencv.git
-cd opencv 
-git checkout 3.3.1 
+cd opencv
+git checkout 3.3.1
+cd ..
 
 git clone https://github.com/opencv/opencv_contrib.git
 cd opencv_contrib
@@ -264,7 +265,7 @@ git checkout 3.3.1
 cd ..
 
 ''' Step 5: Compile and install OpenCV with contrib modules '''
-cd opencv 
+cd opencv
 mkdir build
 cd build
 
@@ -282,7 +283,6 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 
 ''' Step 5.3: Compile and Install '''
 # find out number of CPU cores in your machine
-
 nproc
 # substitute 4 by output of nproc
 make -j1
@@ -352,7 +352,7 @@ Increase is just the amount of compute
 ## AWS EC2 notes
 ######################
 
-# Show hidden 
+# Show hidden
 ls -la /home/ubuntu
 
 #copy
@@ -362,17 +362,23 @@ sudo cp -R /home/ubuntu/extended-vol/home/ubuntu/  ~/home/ubuntu/extended-vol/ho
 
 aws s3 cp -R /home/ubuntu/extended-vol/home/ubuntu/ s3://wunderman-datascience/instance-backup/
 
+
+# Copy folder FROM S3 to current folder
+aws s3 cp s3://wunderman-datascience/microsoft-content-audit/code/pylonlab/ ./ --recursive
+
 #Unmount vol
 sudo umount ~/extended-vol
 
 
-#Original instance 
+#Original instance
 vol-09e1a8f46cb13bdcc
 Instance id:  i-041f57cb1ab8611b9
 
 #remove trash
-rm -rf ~/.local/share/Trash/* 
+rm -rf ~/.local/share/Trash/*
 
+# show size of trash
+du -hs ~/.local/share/Trash
 
 
 
@@ -413,7 +419,7 @@ sudo resize2fs /dev/xvda1
 
 # solve by deleting the old host key
 # sometimes caused by changing the IP of cluster (I.e when assigning Elastic IP)
-ssh-keygen -R ec2-35-165-208-131.us-west-2.compute.amazonaws.com                  
+ssh-keygen -R ec2-35-165-208-131.us-west-2.compute.amazonaws.com
 
 
 # Checking an instance
@@ -421,8 +427,9 @@ ping ec2-54-244-49-121.us-west-2.compute.amazonaws.com
 
 
 
+######################
+## AMIs
+######################
 
-
-
-
-
+# However please be aware that any time an AMI is taken..instance will get rebooted...this is recommended for preventing any data inconsistencies that might cause boot issues..
+# If you created ami from instance..and launch it...it will create same exact copy..while creating an AMI by default reboot occurs...this is recommended...it is not recommended to check "no reboot option"

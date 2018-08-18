@@ -8,6 +8,24 @@
 """
 
 
+##############################
+# Plot Visualisation
+##############################
+
+# Title positioning
+plt.title('Title', fontsize=14, y=1.05)
+
+
+# 3d plotting
+%matplotlib inline
+import mpld3
+mpld3.enable_notebook()
+
+
+
+##############################
+# Image plotting
+##############################
 
 # PLot random images frame by frame
 import numpy as np
@@ -17,6 +35,7 @@ for j in range(0,3):
     plt.imshow(img)
     plt.title('Number ' + str(j))
     plt.pause(3)
+
 
 
 # plot frame by frame
@@ -30,6 +49,7 @@ for j in images_loop:
     plt.pause(0.2)
 
 
+
 #Plot points over an image
 import matplotlib.pyplot as plt
 im = plt.imread(image_name)
@@ -41,3 +61,88 @@ plt.scatter([10], [20])
 # put a red dot, size 40, at 2 locations:
 plt.scatter(x=[30, 40], y=[50, 60], c='r', s=40)
 plt.show()
+
+
+
+
+##############################
+# Seaborn Countplot (barplot)
+##############################
+
+# barplot
+plt.figure(figsize=(15,10))
+plt.title('Number of different months bought per customer - 2 year period', fontsize=14)
+sns.set_style('whitegrid')
+ax = sns.countplot(data=dfs, x = 'total_months')
+
+
+
+
+##############################
+# Seaborn Countplot (barplot) - Lablled
+##############################
+#Total number of months per user
+vol_by_totalmonths = dfs.groupby('total_months').size()
+
+#Percentage
+per_by_totalmonths =  dfs.groupby('total_months').size() / len(dfs)
+per_by_totalmonths = per_by_totalmonths.map(lambda n: '{:,.2%}'.format(n))
+
+
+plt.figure(figsize=(15,10))
+plt.title('Number of different months bought per customer - 2 year period', fontsize=14)
+sns.set_style('whitegrid')
+ax = sns.countplot(data=dfs, x = 'total_months')
+
+for p, label in zip(ax.patches, per_by_totalmonths):
+    ax.annotate(label, (p.get_x()+0, p.get_height()+500))
+
+
+
+
+
+############################################
+# pairplot - distributions and correlation
+############################################
+import pandas as pd
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib as mpl
+import numpy as np
+import seaborn as sns
+path='/Users/bartramshawd/Documents/datasets/'
+white_wine = pd.read_csv(path+'winequality-white.csv', sep=';')
+red_wine = pd.read_csv(path+'winequality-red.csv', sep=';')
+
+# store wine type as an attribute
+red_wine['wine_type'] = 'red'
+white_wine['wine_type'] = 'white'
+
+# bucket wine quality scores into qualitative quality labels
+red_wine['quality_label'] = red_wine['quality'].apply(lambda value: 'low'
+                                                          if value <= 5 else 'medium'
+                                                              if value <= 7 else 'high')
+red_wine['quality_label'] = pd.Categorical(red_wine['quality_label'],
+                                           categories=['low', 'medium', 'high'])
+white_wine['quality_label'] = white_wine['quality'].apply(lambda value: 'low'
+                                                              if value <= 5 else 'medium'
+                                                                  if value <= 7 else 'high')
+white_wine['quality_label'] = pd.Categorical(white_wine['quality_label'],
+                                             categories=['low', 'medium', 'high'])
+
+# merge red and white wine datasets
+wines = pd.concat([red_wine, white_wine])
+
+# re-shuffle records just to randomize data points
+wines = wines.sample(frac=1, random_state=42).reset_index(drop=True)
+
+
+# Pair-wise Scatter Plots
+cols = ['density', 'residual sugar', 'total sulfur dioxide', 'fixed acidity']
+pp = sns.pairplot(wines[cols], size=1.8, aspect=1.8,
+                  plot_kws=dict(edgecolor="k", linewidth=0.5),
+                  diag_kind="kde", diag_kws=dict(shade=True))
+
+fig = pp.fig
+fig.subplots_adjust(top=0.93, wspace=0.3)
+t = fig.suptitle('Wine Attributes Pairwise Plots', fontsize=14)

@@ -113,6 +113,7 @@ with open(data_path+'working_json') as f:
 # Pickle
 ############################"""
 import pickle
+import pandas as pd
 
 # Save a dictionary into a pickle file.
 favorite_color = { "lion": "yellow", "kitty": "red" }
@@ -131,3 +132,23 @@ import cPickle as pickle
 favorite_color = pickle.load( open( "save.p", "rb" ) )
 with open('path/data_pol_fit.pkl', 'rb') as handle:
         data = pickle.load(handle)
+
+
+
+ex = pickle.load( open( "/Users/bartramshawd/Documents/MICROSOFT/MICROSOFT_AUDIT_PROJECT/microsoft_external_scrape_full.p", "rb" ) )
+ex[4].split("|||")
+full_df = pd.DataFrame(columns=['url','title_text','location_text','price_text','images','text','html'])
+counter =0
+for i in ex:
+    counter+=1
+    try:
+        df = pd.DataFrame(i.split("|||")).T
+        df.columns=['url','title_text','location_text','price_text','images','text','html']
+        full_df = full_df.append(df)
+    except:
+        print(counter,'failed')
+
+full_df
+
+
+KeyError: 0

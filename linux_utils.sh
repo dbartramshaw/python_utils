@@ -202,3 +202,26 @@ source .bash_profile
 brew postinstall python
 brew postinstall python3
 sudo easy_install pip
+
+
+
+
+
+
+######################
+# Space
+######################
+# du command: Estimate file space usage.
+# -h : Print sizes in human readable format (e.g., 10MB).
+# -S : Do not include size of subdirectories.
+# -s : Display only a total for each argument.
+# sort command : sort lines of text files.
+# -r : Reverse the result of comparisons.
+# -h : Compare human readable numbers (e.g., 2K, 1G).
+# head : Output the first part of files
+
+# To display the largest folders/files including the sub-directories, run:
+du -Sh | sort -rh | head -5
+
+# top 50 files
+find -type f -exec du -Sh {} + | sort -rh | head -n 50

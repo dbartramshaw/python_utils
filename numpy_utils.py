@@ -71,7 +71,7 @@ np.append(data,new_col)
 
 
 #argsort
-x = numpy.array([1.48,1.41,0.0,0.1])
+x = np.array([1.48,1.41,0.0,0.1])
 a = x.argsort()
 print x[a] #, we will get array([ 0. , 0.1 , 1.41, 1.48]
 
@@ -156,6 +156,32 @@ full_sparse.shape
 
 
 ############################
+# Convert an image to co-ordinates and values
+############################
+"""
+    ------------------------------------------------
+    Convert an image to co-ordinates and values
+    ------------------------------------------------
+    IN : Matrix or Image (height=y, width=x)
+    OUT: x,y,values
+
+"""
+data = img.getdata()
+width, height = img.size
+pixelList = []
+xy_cords =[]
+values=[]
+for i in range(height):
+    for j in range(width):
+        stride = (width*i) + j
+        pixelList.append((j, i, data[stride]))
+        xy_cords.append((j,i))
+        values.append((data[stride]))
+
+
+
+
+############################
 # List Comprehensions
 ############################
 [a if a else 2 for a in [0,1,0,3]]
@@ -168,6 +194,12 @@ flat_list = [item for sublist in l for item in sublist]
 ############################
 # Dictionarys
 ############################
+
+
+# create empty dict from keys 
+val_dict = dict.fromkeys(['loc','serves','loc_link','serves_link','html'])
+
+
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
     z = x.copy()
@@ -327,12 +359,13 @@ list(itertools.product(*a))
 ############################
 # Time
 ############################
+import time
 from time import gmtime, strftime
 print('Start: '+strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 ### DO SOMETHING
 print('End: '+strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 
-
+import time
 start = time.time()
 ### DO SOMETHING
 end = time.time()
@@ -513,3 +546,25 @@ for root, dirs, files in os.walk(".", topdown=False):
       print(os.path.join(root, name))
    for name in dirs:
       print(os.path.join(root, name))
+
+
+
+##########################
+# Optimise Code
+##########################
+import cProfile
+cProfile.run('2 + 2')
+
+
+
+##########################
+# Missing variable
+##########################
+# Often used when pulling items
+foo = 3
+del foo
+
+if 'foo' not in locals():
+    var_ = 'foo'
+    locals()['foo'] = 'unknown'
+foo
