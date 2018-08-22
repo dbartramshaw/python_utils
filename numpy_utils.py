@@ -196,7 +196,7 @@ flat_list = [item for sublist in l for item in sublist]
 ############################
 
 
-# create empty dict from keys 
+# create empty dict from keys
 val_dict = dict.fromkeys(['loc','serves','loc_link','serves_link','html'])
 
 
@@ -568,3 +568,69 @@ if 'foo' not in locals():
     var_ = 'foo'
     locals()['foo'] = 'unknown'
 foo
+
+
+
+############################
+# Arg Parser
+############################
+
+# For script running in terminal
+parser = argparse.ArgumentParser()
+parser.add_argument('--root', type=str, default='/srv/datasets/Places2')
+parser.add_argument('--mask_root', type=str, default='./masks')
+parser.add_argument('--save_dir', type=str, default='./snapshots/default')
+args = parser.parse_args()
+
+#To run through in ipython/jupyter
+class Namespace:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+args = Namespace(a=1, b='c')
+args.a
+
+args =  Namespace(
+            root = '/srv/datasets/Places2',
+            mask_root='./masks',
+            save_dir = './snapshots/default',
+            )
+
+
+############################
+# Retry loop - x times
+############################
+# Simple version:
+# http://code.activestate.com/recipes/578163-retry-loop/
+
+import sys, time
+
+class RetryError(Exception):
+    pass
+
+def retryloop(attempts, timeout):
+    starttime = time.time()
+    success = set()
+    for i in range(attempts):
+        success.add(True)
+        yield success.clear
+        if success:
+            return
+        if time.time() > starttime + timeout:
+            break
+    raise RetryError
+
+"""
+Usage:
+
+for retry in retryloop(10, timeout=30):
+    try:
+        something
+    except SomeException:
+        retry()
+
+for retry in retryloop(10, timeout=30):
+    something
+    if somecondition:
+        retry()
+
+"""

@@ -80,11 +80,14 @@ nvidia-smi
 # Screen - Ubuntu Ec2
 ######################
 
-#start screen 
+#start screen escreen
 screen -S dbs_screen
 
 #list screens
 screen -ls
+
+# detach form screen
+Ctrl + A then Ctrl + D
 
 #open certain screen 
 screen -r myprog
@@ -225,3 +228,7 @@ du -Sh | sort -rh | head -5
 
 # top 50 files
 find -type f -exec du -Sh {} + | sort -rh | head -n 50
+
+
+
+
