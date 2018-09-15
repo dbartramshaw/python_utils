@@ -74,6 +74,9 @@ sudo pgrep python
 #see GPU memory
 nvidia-smi
 
+# check every n secs
+watch -n1 nvidia-smi
+
 
 
 ######################
@@ -97,6 +100,9 @@ screen -X -S screen_name  quit
 
 # quit all screens
 pkill screen
+
+#check if i'm in a screen 
+echo $STY
 
 
 ######################
