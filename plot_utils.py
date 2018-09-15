@@ -100,6 +100,52 @@ for p, label in zip(ax.patches, per_by_totalmonths):
 
 
 
+##############################
+# Interactive scatter ATOM
+##############################
+from matplotlib.pyplot import figure, show
+import numpy as np
+import matplotlib.pyplot as plt
+from plotly import offline as py
+import plotly.tools as tls
+from numpy.random import rand
+py.init_notebook_mode()
+
+if 1: # picking on a scatter plot (matplotlib.collections.RegularPolyCollection)
+
+    x, y, c, s = rand(4, 100)
+    def onpick3(event):
+        ind = event.ind
+        print('onpick3 scatter:', ind, npy.take(x, ind), npy.take(y, ind))
+
+    fig = figure()
+    ax1 = fig.add_subplot(111)
+    col = ax1.scatter(x, y, 100*s, c, picker=True)
+    #fig.savefig('pscoll.eps')
+    fig.canvas.mpl_connect('pick_event', onpick3)
+
+py.iplot(tls.mpl_to_plotly(plt.gcf()))
+
+
+##############################
+# tooltip show lables hover
+##############################
+import matplotlib.pyplot as plt
+from mpldatacursor import datacursor
+import random
+
+fig, ax = plt.subplots()
+ax.set_title('Click on a dot to display its label')
+
+# Plot a number of random dots
+for i in range(1, 1000):
+    ax.scatter([random.random()], [random.random()], label='$ID: {}$'.format(i))
+
+# Use a DataCursor to interactively display the label for a selected line...
+datacursor(formatter='{label}'.format)
+py.iplot(tls.mpl_to_plotly(plt.gcf()))
+
+
 
 ############################################
 # pairplot - distributions and correlation

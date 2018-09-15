@@ -135,7 +135,14 @@ eg[1::4]
 # Change format from mathematical to float
 "{:.2f}".format(float("8.99284722486562e-02"))
 
-
+# loop over every N times
+n=123
+step=10
+for i in range(0,n,step):
+    if i<n-step:
+        print(i,i+10)
+    else:
+        print(i,n)
 
 ############################
 # Matrices

@@ -128,7 +128,7 @@ def remove_selected_words(s,remove_words):
 ##############################
 
 def text_from_html(html_unicode):
-  from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup
     soup = BeautifulSoup(html_unicode,"lxml")
     #Remove script
     for script in soup(["script", "style"]):
@@ -219,8 +219,8 @@ class word_features_sim(object):
                     ,_max_features=10000
                     ,_vocabulary=None
                     ,_stopwords='English'
-                    ,_min_df=1
-                    ,_max_df=1000
+                    ,_min_df=0.1
+                    ,_max_df=0.8
                     ):
 
             if vec_type=='tfidf':
