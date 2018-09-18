@@ -1,7 +1,7 @@
 
 """ -----------------------------------------------------------------------------------------------------------
 #
-# Linux code for Python/Machine config 
+# Linux code for Python/Machine config
 #
 #----------------------------------------------------------------------------------------------------------- """
 
@@ -18,7 +18,7 @@ ls -a
 ls -l
 
 #open current location in finder
-open . 
+open .
 
 # count files in folder
 # ls:list , -1: only one entry per line , |: pipe output onto... , wc:"wordcount"   , -l: count lines.
@@ -92,7 +92,7 @@ screen -ls
 # detach form screen
 Ctrl + A then Ctrl + D
 
-#open certain screen 
+#open certain screen
 screen -r myprog
 
 #quit screens
@@ -101,15 +101,15 @@ screen -X -S screen_name  quit
 # quit all screens
 pkill screen
 
-#check if i'm in a screen 
+#check if i'm in a screen
 echo $STY
 
 
 ######################
-# Terminal Install python 
+# Terminal Install python
 ######################
 # problems with hydrogen not saving in packages but in .npm
-apm install hydrogen  
+apm install hydrogen
 
 
 
@@ -120,7 +120,7 @@ apm install hydrogen
 
 
 #Check git details
-git config --list 
+git config --list
 git config user.name
 git config user.email
 
@@ -174,8 +174,8 @@ sudo python3 -m ipykernel install --user
 # run the brew doctor - follow instructions
 
 # Will still run
-python3 -m pip install --upgrade pip 
-python -m pip install --upgrade pip 
+python3 -m pip install --upgrade pip
+python -m pip install --upgrade pip
 
 # wont run
 pip install numpy
@@ -184,7 +184,7 @@ pip install numpy
 sudo chown -R bartramshawd pip
 
 #reset the PATH variable
-#Create a version of bash_profile (Save this as my_profile) 
+#Create a version of bash_profile (Save this as my_profile)
 
 # #------------------------------------
 # export PATH=/usr/local/bin:$PATH
@@ -235,6 +235,8 @@ du -Sh | sort -rh | head -5
 # top 50 files
 find -type f -exec du -Sh {} + | sort -rh | head -n 50
 
-
-
-
+# count number of files in each subfolder
+find . -maxdepth 1 -mindepth 1 -type d | while read dir; do
+  printf "%-25.25s : " "$dir"
+  find "$dir" -type f | wc -l
+done
