@@ -74,6 +74,36 @@ df.query(brand_str_filter)
 # drop multiple certain columns
 df.drop(['columnheading1', 'columnheading2'], axis=1, inplace=True)
 
+# Drop duplicate columns
+def duplicate_columns(df, return_dataframe = False, verbose = False):
+    '''
+        a function to detect and possibly remove duplicated columns for a pandas dataframe
+    '''
+    from pandas.core.common import array_equivalent
+    # group columns by dtypes, only the columns of the same dtypes can be duplicate of each other
+    groups = df.columns.to_series().groupby(df.dtypes).groups
+    duplicated_columns = []
+
+    for dtype, col_names in groups.items():
+        column_values = df[col_names]
+        num_columns = len(col_names)
+
+        # find duplicated columns by checking pairs of columns, store first column name if duplicate exist
+        for i in range(num_columns):
+            column_i = column_values.iloc[:,i].values
+            for j in range(i + 1, num_columns):
+                column_j = column_values.iloc[:,j].values
+                if array_equivalent(column_i, column_j):
+                    if verbose:
+                        print("column {} is a duplicate of column {}".format(col_names[i], col_names[j]))
+                    duplicated_columns.append(col_names[i])
+                    break
+    if not return_dataframe:
+        # return the column names of those duplicated exists
+        return duplicated_columns
+    else:
+        # return a dataframe with duplicated columns dropped
+        return df.drop(labels = duplicated_columns, axis = 1)
 
 
 
@@ -93,3 +123,31 @@ df.columns = df.columns.droplevel()
 
 # Sort by index
 df.sort_index(inplace=True)
+
+
+
+############################
+# lambda
+############################
+sample['PR'] = sample['PR'].apply(lambda x: np.nan if x < 90 else x)
+
+
+
+############################
+# Balance Sample - Random
+############################
+g = train_data.groupby('BOOKINGS_POST_YN')
+train_data_balanced = g.apply(lambda x: x.sample(g.size().min()).reset_index(drop=True)).reset_index(drop=True)
+
+
+
+
+############################
+# add time delta (Time to first bookin in period)
+############################
+import datetime
+pre_enddate = datetime.datetime.strptime('30-06-2017', "%d-%m-%Y").date()
+post_enddate = datetime.datetime.strptime('30-06-2018', "%d-%m-%Y").date()
+
+df_trans['time_to_first_tran'] = post_enddate - df_trans['FIRST_BOOKING_DT']  #format = 349 days
+df_trans['time_to_first_tran'] =  = [int(i.days) for i in df_trans['time_to_first_tran']]

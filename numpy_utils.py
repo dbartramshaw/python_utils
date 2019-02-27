@@ -313,6 +313,19 @@ for i in your_list:
 str(3).zfill(3)
 
 
+import math
+def roundup(x):
+    return int(math.ceil(x / 10.0)) * 10
+
+
+def rounddown(x, base=5):
+  """ round to the nearesy base """
+    return int(base * round(float(x)/base))
+
+
+def roundup(x, base=5):
+    """ Roundup to the nearest base """
+    return math.ceil(float(x)/base)
 
 ############################
 # Zip

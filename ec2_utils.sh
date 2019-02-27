@@ -101,7 +101,7 @@ ipython
 from IPython.lib import passwd
 
 passwd() #password
-#Out[2]: 'sha1:cbd351b6ab01:e2a4bbf3aa2511ec6090e8ae1176f345793fd96d'
+#Out[2]: 'sha1:42df52567bfa:1e71bc87c38b15efec3799f2b0b5e3e1c121feae'
 exit()
 
 jupyter notebook --generate-config
@@ -143,7 +143,7 @@ c.NotebookApp.ip = '*'
 c.NotebookApp.open_browser = False
 
 # Your password below will be whatever you copied earlier
-c.NotebookApp.password = 'sha1:985a0a91503f:cb28d23954f4e27e9e161b38deea32882e0240a8'
+c.NotebookApp.password = 'sha1:42df52567bfa:1e71bc87c38b15efec3799f2b0b5e3e1c121feae'
 c.NotebookApp.port = 8889
 '''
 

@@ -24,6 +24,20 @@ mpld3.enable_notebook()
 
 
 ##############################
+# Format
+##############################
+%matplotlib inline
+fig, ax = plt.subplots(figsize=(10,8))
+
+
+ax.set_title("Heatmap showing Actual Time till next booking vs percentage predicted", y=1.05,fontsize=14)
+
+
+
+
+
+
+##############################
 # Image plotting
 ##############################
 
@@ -99,6 +113,21 @@ for p, label in zip(ax.patches, per_by_totalmonths):
 
 
 
+##############################
+# Seaborn heatmap
+##############################
+import seaborn as sns
+%matplotlib inline
+
+idx= ['aaa','bbb','ccc','ddd','eee']
+cols = list('ABCD')
+df = pd.DataFrame(abs(np.random.randn(5,4)), index=idx, columns=cols)
+
+# _r reverses the normal order of the color map 'RdYlGn'
+sns.heatmap(df, cmap='RdYlGn_r', linewidths=0.5, annot=True)
+
+
+
 
 ##############################
 # Interactive scatter ATOM
@@ -125,6 +154,7 @@ if 1: # picking on a scatter plot (matplotlib.collections.RegularPolyCollection)
     fig.canvas.mpl_connect('pick_event', onpick3)
 
 py.iplot(tls.mpl_to_plotly(plt.gcf()))
+
 
 
 ##############################
