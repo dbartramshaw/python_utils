@@ -13,3 +13,6 @@ gcloud config set project YOUR-PROJECT-ID-HER
 
 # ssh from terminal
 gcloud compute --project "project-name" ssh --zone "us-west1-b" "instance-name"
+
+# copy script from storage
+gsutil cp -p gs://bucket-name/file-name.sh file-name.sh
