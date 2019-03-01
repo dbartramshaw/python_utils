@@ -40,6 +40,8 @@ chmod +x /path/to/yourscript.sh
 #Since . refers to the current directory: if yourscript.sh is in the current directory, you can simplify this to:
 ./yourscript.sh
 
+# split files
+split -l 5000000 file_name.csv  
 
 ######################
 # Processes
