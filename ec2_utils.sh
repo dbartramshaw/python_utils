@@ -102,6 +102,10 @@ from IPython.lib import passwd
 
 passwd() #password
 #Out[2]: 'sha1:42df52567bfa:1e71bc87c38b15efec3799f2b0b5e3e1c121feae'
+# 'sha1:438ebcc4c512:8edea6d2becf9a0c7e7125965833ea4fd217d4c7'
+# 'sha1:826246882b57:0957445ad9fca61e5c26ea8478f3af88f928da19'
+# 'sha1:d7acf2d1c422:4d1f0dbef6b883f79231bf5a4f6cd84a15e77e25'
+
 exit()
 
 jupyter notebook --generate-config
@@ -109,6 +113,7 @@ y
 mkdir certs
 cd certs
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
+
 '''
 Generating a 1024 bit RSA private key
 ..............................++++++
@@ -138,14 +143,19 @@ nano jupyter_notebook_config.py
 '''
 c = get_config()
 c.IPKernelApp.pylab = 'inline'
+# add this for GCP
+c.NotebookApp.allow_remote_access = True
+
 c.NotebookApp.certfile = u'/home/ubuntu/certs/mycert.pem'
 c.NotebookApp.ip = '*'
 c.NotebookApp.open_browser = False
 
 # Your password below will be whatever you copied earlier
-c.NotebookApp.password = 'sha1:42df52567bfa:1e71bc87c38b15efec3799f2b0b5e3e1c121feae'
+c.NotebookApp.password = 'sha1:d7acf2d1c422:4d1f0dbef6b883f79231bf5a4f6cd84a15e77e25'
 c.NotebookApp.port = 8889
 '''
+
+
 
 cd
 
@@ -156,9 +166,11 @@ cd Notebook/
 #nohup means it doesnt close down when exit
 nohup jupyter notebook
 
+nohup jupyter-notebook --open_browser=False
+
 #https://193.109.116.16/32:8888/
-
-
+https://35.199.147.134:8889/
+https://35.199.147.217:8889/
 
 #####################
 # Install OPENCV

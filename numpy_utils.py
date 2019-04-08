@@ -44,6 +44,15 @@ def join_two_dicts(a,
 
 
 
+
+#update values of an old dict with another dict
+dict1 = {'bookA': 1, 'bookB': 2, 'bookC': 3}
+dict2 = {'bookC': 2, 'bookD': 4, 'bookE': 5}
+dict2.update(dict1)
+dict2
+
+
+
 ############################
 # reload in Python3
 ############################
@@ -454,6 +463,12 @@ def UNIX_to_str(UNIX_date):
     return date.strftime('%x')
 
 
+# Time it
+from datetime import datetime 
+start_time = datetime.now()
+# INSERT YOUR CODE
+time_elapsed = datetime.now() - start_time
+print('Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed))
 
 
 ############################

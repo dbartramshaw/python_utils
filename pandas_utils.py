@@ -149,5 +149,5 @@ import datetime
 pre_enddate = datetime.datetime.strptime('30-06-2017', "%d-%m-%Y").date()
 post_enddate = datetime.datetime.strptime('30-06-2018', "%d-%m-%Y").date()
 
-df_trans['time_to_first_tran'] = post_enddate - df_trans['FIRST_BOOKING_DT']  #format = 349 days
-df_trans['time_to_first_tran'] =  = [int(i.days) for i in df_trans['time_to_first_tran']]
+df_trans['time_to_first_tran'] = post_enddate - df_trans['FIRST_BOOKING_DT']                 #format = 349 days
+df_trans['time_to_first_tran'] =  = [int(i.days) for i in df_trans['time_to_first_tran']]    #format = 349

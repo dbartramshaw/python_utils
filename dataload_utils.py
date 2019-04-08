@@ -135,4 +135,12 @@ with open('path/data_pol_fit.pkl', 'rb') as handle:
 
 
 
-
+"""############################
+# Blob
+############################"""
+# file path of Unmetric data
+file_path = "/file/path/name"
+file_type = "xlsx"
+fbfiles = glob.glob(file_path+"*."+file_type)
+#remove open files ~$
+fbfiles = [x for x in fbfiles if x[len(file_path):len(file_path)+2]!="~$"]

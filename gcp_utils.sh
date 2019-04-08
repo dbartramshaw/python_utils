@@ -44,8 +44,7 @@ gsutil cp -R s3://bucketname gs://bucketname
 sutil -m cp -R s3://bucketname gs://bucketname
 
 # split files
-split -l 5000000 od_extract_20181130.csv  
+split -l 5000000 file_name.csv  
 
-# Needs
-gsutil cp -R s3://wunderman-datascience/instance-backups/ci-prod-instance-backup-20-11-2018/nohup.out gs://dbs-loom/config/test_transfer.sh 
+
 
