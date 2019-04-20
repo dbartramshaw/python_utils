@@ -336,6 +336,23 @@ def roundup(x, base=5):
     """ Roundup to the nearest base """
     return math.ceil(float(x)/base)
 
+
+def RepresentsInt(s):
+  """ Check if a str can be an int 
+
+      ---------
+      Example
+      ---------
+          '-3' = True
+          'f.4' = False
+  """
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+
 ############################
 # Zip
 ############################
@@ -345,6 +362,11 @@ trainingData_test = list(zip(train_data,training_labels))
 # Unzip into two lists
 X, Y = zip(*trainingData_test)
 
+
+import itertools
+def zip_with_scalar(l, o):
+    """ Zip a list with a single value """
+    return zip(l, itertools.repeat(o))
 
 
 
@@ -582,6 +604,10 @@ for root, dirs, files in os.walk(".", topdown=False):
    for name in dirs:
       print(os.path.join(root, name))
 
+
+# Load all json from a folder
+import glob
+glob.glob( 'foldername/*.json' )
 
 
 ##########################
