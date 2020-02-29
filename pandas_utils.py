@@ -50,6 +50,13 @@ df['var3'].map(lambda n: '{:,.2%}'.format(n))
 # format % on series
 series_example.map(lambda n: '{:,.2%}'.format(n))
 
+# rename those annoying multi-indexes
+def rename_multi_index(df):
+    L0 = list(df.columns.get_level_values(0))
+    L1 = list(df.columns.get_level_values(1))
+    df.columns = [str(x)+'_'+str(y) for x,y in zip(L0,L1)]
+    return df
+
 
 ############################
 # dynamic filtering

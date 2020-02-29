@@ -54,6 +54,15 @@ with open(myfilename) as f :
 
 
 
+# Look at subfolder of s3
+s3 = boto3.client("s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+bucket_name = "wta-ibm"
+response = s3.list_objects_v2(Bucket=bucket_name)
+bucket_objects = pd.DataFrame.from_dict(s3.list_objects(Bucket=bucket_name)['Contents']) 
+
+# list after subfolder
+s3.list_objects_v2(Bucket='wta-ibm',StartAfter='Zipline')['Contents']
+
 
 """##################################
 # json

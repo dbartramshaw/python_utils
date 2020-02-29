@@ -12,6 +12,13 @@
 # Join dicts python2
 ############################
 import numpy as np
+
+dir(np)
+
+import os
+os.getcwd()
+
+
 from __future__ import division
 import collections
 from collections import defaultdict
@@ -338,7 +345,7 @@ def roundup(x, base=5):
 
 
 def RepresentsInt(s):
-  """ Check if a str can be an int 
+  """ Check if a str can be an int
 
       ---------
       Example
@@ -346,7 +353,7 @@ def RepresentsInt(s):
           '-3' = True
           'f.4' = False
   """
-    try: 
+    try:
         int(s)
         return True
     except ValueError:
@@ -486,7 +493,7 @@ def UNIX_to_str(UNIX_date):
 
 
 # Time it
-from datetime import datetime 
+from datetime import datetime
 start_time = datetime.now()
 # INSERT YOUR CODE
 time_elapsed = datetime.now() - start_time
