@@ -20,6 +20,15 @@ max_columns
 # Column Formatting
 ############################
 
+
+# Create a dictionary with counts of datatypes
+col_types_counts = {df.columns[i]: df.iloc[:,i].apply(type).value_counts().to_dict() for i in range(df.shape[1])}
+
+# Convert to a dataframe and transpose
+pd.DataFrame(col_types_counts).T
+
+
+
 def p2f(x):
     '''
         Convert Percentage to decimal
@@ -158,3 +167,26 @@ post_enddate = datetime.datetime.strptime('30-06-2018', "%d-%m-%Y").date()
 
 df_trans['time_to_first_tran'] = post_enddate - df_trans['FIRST_BOOKING_DT']                 #format = 349 days
 df_trans['time_to_first_tran'] =  = [int(i.days) for i in df_trans['time_to_first_tran']]    #format = 349
+
+
+
+
+############################
+# concat / combine text from multiple rows
+############################
+df.groupby(['cluster'])['text_col'].apply(lambda x: ','.join(x))
+
+
+
+
+
+############################
+# File size estimation
+############################
+
+def file_size(fname):
+        import os
+        statinfo = os.stat(fname)
+        return statinfo.st_size
+
+print("File size in bytes of a plain file: ",file_size(data_dict_dir+'DICT_IB_VINS_Z743.csv'))
